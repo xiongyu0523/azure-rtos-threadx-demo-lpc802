@@ -1,6 +1,6 @@
 # azure-rtos-threadx-demo-lpc802
 
-This demo project is to demostrate porting Azure RTOS ThreadX on a tiny MCU LPC802, which has only 16KB Flash and 2KB RAM. Though running a RTOS on such a very resource constrained MCU is not very common, the primary goal here is to showcase how small a basic RTOS can be. 
+This project is to demostrate porting Azure RTOS ThreadX on a tiny MCU LPC802, which has only 16KB Flash and 2KB RAM. Though running a RTOS on such a very resource constrained MCU is not very common, the primary goal here is to showcase how small a basic RTOS can be. 
 
 > Generally a MCU with 64KB Flash and 8KB RAM will be a good fit for using a RTOS based application.  
 
