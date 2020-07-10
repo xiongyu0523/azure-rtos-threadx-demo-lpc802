@@ -96,15 +96,23 @@
 #define TX_TIMER_THREAD_PRIORITY                ????
 */
 
+/* Disable error checking to minimize code */
+#define TX_DISABLE_ERROR_CHECKING
+#define TX_TIMER_PROCESS_IN_ISR
+#define TX_DISABLE_REDUNDANT_CLEARING
+#define TX_DISABLE_NOTIFY_CALLBACKS
+#define TX_DISABLE_PREEMPTION_THRESHOLD
+#define TX_NOT_INTERRUPTABLE
+
 /* Determine if timer expirations (application timers, timeouts, and tx_thread_sleep calls 
    should be processed within the a system timer thread or directly in the timer ISR. 
    By default, the timer thread is used. When the following is defined, the timer expiration 
    processing is done directly from the timer ISR, thereby eliminating the timer thread control
    block, stack, and context switching to activate it.  */
 
-
+/*
 #define TX_TIMER_PROCESS_IN_ISR
-
+*/
 
 /* Determine if in-line timer reactivation should be used within the timer expiration processing.
    By default, this is disabled and a function call is used. When the following is defined,
