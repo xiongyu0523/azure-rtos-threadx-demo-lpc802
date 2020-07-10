@@ -6,8 +6,9 @@
  */
 
 #include "board.h"
-
 #include "pin_mux.h"
+#include "tx_api.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -17,57 +18,55 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+#define DEMO_STACK_SIZE		256
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-volatile uint32_t g_systickCounter;
+TX_THREAD   thread_0;
+uint32_t    thread_0_stack[DEMO_STACK_SIZE / sizeof(uint32_t)];
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
-void SysTick_Handler(void)
+
+/*!
+ * @brief thread 0 entry
+ */
+void thread_0_entry(ULONG thread_input)
 {
-    if (g_systickCounter != 0U)
-    {
-        g_systickCounter--;
+	(void)thread_input;
+
+    while(1) {
+        tx_thread_sleep(100);
+        GPIO_PortToggle(GPIO, BOARD_LED_PORT, 1u << BOARD_LED_PIN);
     }
 }
 
-void SysTick_DelayTicks(uint32_t n)
+
+/*!
+ * @brief User defined initialization function
+ */
+void tx_application_define(void *first_unused_memory)
 {
-    g_systickCounter = n;
-    while (g_systickCounter != 0U)
-    {
-    }
+	(void)first_unused_memory;
+
+	(void)tx_thread_create(&thread_0, "thread 0", thread_0_entry, (ULONG)0,
+                           &thread_0_stack[0], DEMO_STACK_SIZE, 1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
 }
+
 
 /*!
  * @brief Main function
  */
 int main(void)
 {
-    /* Init output LED GPIO. */
+    /* hw init */
     GPIO_PortInit(GPIO, BOARD_LED_PORT);
-    /* Board pin init */
-    /* Attach 12 MHz clock to USART0 (debug console) */
     CLOCK_Select(kUART0_Clk_From_MainClk);
-
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
 
-    /* Set systick reload value to generate 1ms interrupt */
-    if (SysTick_Config(SystemCoreClock / 1000U))
-    {
-        while (1)
-        {
-        }
-    }
-
-    while (1)
-    {
-        /* Delay 1000 ms */
-        SysTick_DelayTicks(1000U);
-        GPIO_PortToggle(GPIO, BOARD_LED_PORT, 1u << BOARD_LED_PIN);
-    }
+    tx_kernel_enter();
+    return -1;
 }

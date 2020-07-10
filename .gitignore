@@ -2,3 +2,5 @@
 /Debug/
 /Release/
 /.settings/
+azure-rtos-threadx-demo-lpc802 LinkServer Debug.launch
+azure-rtos-threadx-demo-lpc802 LinkServer Release.launch

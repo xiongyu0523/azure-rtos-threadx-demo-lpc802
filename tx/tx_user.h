@@ -102,9 +102,9 @@
    processing is done directly from the timer ISR, thereby eliminating the timer thread control
    block, stack, and context switching to activate it.  */
 
-/*
+
 #define TX_TIMER_PROCESS_IN_ISR
-*/
+
 
 /* Determine if in-line timer reactivation should be used within the timer expiration processing.
    By default, this is disabled and a function call is used. When the following is defined,
